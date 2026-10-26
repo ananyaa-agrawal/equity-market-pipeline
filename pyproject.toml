@@ -1,0 +1,18 @@
+# Tells Python that the code in src/pipeline is an installable package named "pipeline",
+# and tells pytest where to find it. Dependencies are listed in requirements.txt.
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "market-pipeline"
+version = "0.1.0"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

@@ -1,0 +1,72 @@
+# Every setting the pipeline uses lives here. Changing a number should never
+# require changing code. config.py checks this file before every run.
+
+# About 30 large, liquid NSE stocks. ".NS" tells Yahoo Finance the stock trades on
+# the National Stock Exchange of India. "Liquid" means lots of shares trade every
+# day, so our simulated orders are realistic.
+tickers:
+  - RELIANCE.NS     # Reliance Industries
+  - TCS.NS          # Tata Consultancy Services
+  - HDFCBANK.NS     # HDFC Bank
+  - INFY.NS         # Infosys
+  - ICICIBANK.NS    # ICICI Bank
+  - HINDUNILVR.NS   # Hindustan Unilever
+  - ITC.NS          # ITC
+  - SBIN.NS         # State Bank of India
+  - BHARTIARTL.NS   # Bharti Airtel
+  - KOTAKBANK.NS    # Kotak Mahindra Bank
+  - LT.NS           # Larsen & Toubro
+  - AXISBANK.NS     # Axis Bank
+  - ASIANPAINT.NS   # Asian Paints
+  - MARUTI.NS       # Maruti Suzuki
+  - SUNPHARMA.NS    # Sun Pharmaceutical
+  - TITAN.NS        # Titan Company
+  - BAJFINANCE.NS   # Bajaj Finance
+  - ULTRACEMCO.NS   # UltraTech Cement
+  - NESTLEIND.NS    # Nestle India
+  - WIPRO.NS        # Wipro
+  - HCLTECH.NS      # HCL Technologies
+  - TECHM.NS        # Tech Mahindra
+  - POWERGRID.NS    # Power Grid Corporation
+  - NTPC.NS         # NTPC
+  - ONGC.NS         # Oil & Natural Gas Corporation
+  - TATASTEEL.NS    # Tata Steel
+  - JSWSTEEL.NS     # JSW Steel
+  - M&M.NS          # Mahindra & Mahindra
+  - BAJAJFINSV.NS   # Bajaj Finserv
+  - ADANIPORTS.NS   # Adani Ports & SEZ
+
+# The NIFTY 50 index. The days it has data are the real NSE trading days, so it
+# skips weekends and exchange holidays (Diwali, Holi, ...) automatically.
+calendar_ticker: "^NSEI"
+
+# First day of history: 5 years before this project was set up (2026-10-24).
+# It's a fixed date rather than "today minus 5 years" so that re-running the
+# backtest next month reproduces exactly the same results.
+history_start: "2021-10-24"
+
+strategy:
+  n_stocks: 5               # hold the 5 biggest losers each day
+  capital_inr: 1000000      # Rs 10 lakh, split equally across the 5 stocks
+
+# Trading costs, in basis points (bps). 1 bp = 0.01%, so 100 bps = 1%.
+costs:
+  slippage_bps: 5           # the price moves 0.05% against us when we trade
+  fee_bps: 10               # 0.10% of traded value, charged on each buy and each sell
+
+# How the simulated broker behaves.
+broker:
+  partial_fill_prob: 0.05   # 5% of orders only fill partly...
+  partial_fill_min: 0.5     # ...somewhere between 50%...
+  partial_fill_max: 0.9     # ...and 90% of the shares ordered
+  random_seed: 42           # makes the "random" partial fills repeatable
+
+quality:
+  jump_threshold: 0.20      # flag a close-to-close move bigger than 20%
+  stale_days: 3             # flag a price that hasn't changed for 3+ days in a row
+
+# Relative paths are relative to the project folder.
+paths:
+  db: data/market.db
+  logs: logs
+  reports: reports
